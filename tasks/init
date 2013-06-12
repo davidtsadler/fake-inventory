@@ -26,3 +26,11 @@ else
   echo "Creating directory $DIR_TMP"
   mkdir "$DIR_TMP"
 fi
+
+if [[ -d "$DIR_INVENTORY" ]]; then
+  echo "Skipping creating of directory $DIR_INVENTORY due to it already existing."
+  rm -f $DIR_INVENTORY/*
+else
+  echo "Creating directory $DIR_INVENTORY"
+  mkdir "$DIR_INVENTORY"
+fi

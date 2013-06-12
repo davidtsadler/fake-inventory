@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source ./tasks/variables.inc
+
+rm -rf $DIR_INVENTORY/$FROOITION_TV
+saxonb-xslt -s:$DIR_DB/$DB_TV -xsl:$DIR_XSL/$TV_FROOITION > $DIR_INVENTORY/$FROOITION_TV
