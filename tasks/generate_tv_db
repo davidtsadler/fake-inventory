@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+source ./tasks/variables.inc
+
+echo -n "Enter your TheTVDB Account Identifier and press [ENTER]: "
+read IDENTIFIER
+
+SERIES=('American Dad!' 
+  "Bob's Burgers"
+  'Doctor Who'
+  'Family Guy'
+  'Mystery Science Theater 3000'
+)
+
+rm -rf $DIR_DB/$DB_TV
+rm -f $DIR_TMP/$TV_ZIP
+rm -f $DIR_TMP/$TV_XML
+
+echo '<?xml version="1.0" encoding="UTF-8"?><data>' >> $DIR_DB/$DB_TV
+
+for index in ${!SERIES[*]}
+do
+  echo ${SERIES[$index]}
+
+  SERIES_ID=`curl -s --get $SERIES_ID_URL --data-urlencode "seriesname=${SERIES[$index]}" --data-urlencode "language=en" | grep -m 1 seriesid | sed 's/[^0-9]*//g'`
+  wget -q "$TV_API/$IDENTIFIER/series/$SERIES_ID/all/en.zip" -O $DIR_TMP/$TV_ZIP
+  unzip -q $DIR_TMP/$TV_ZIP $TV_XML -d $DIR_TMP 
+
+  saxonb-xslt -s:$DIR_TMP/$TV_XML -xsl:$DIR_XSL/$TRANSFORM_TV >> $DIR_DB/$DB_TV
+
+  rm -f $DIR_TMP/$TV_ZIP
+  rm -f $DIR_TMP/$TV_XML
+done
+
+echo '</data>' >> $DIR_DB/$DB_TV

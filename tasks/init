@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+source ./tasks/variables.inc
+
+echo $DIR_DB
+
+if [[ -d "$DIR_XSL" ]]; then
+  echo "Skipping creating of directory $DIR_XSL due to it already existing."
+else
+  echo "Creating directory $DIR_XSL"
+  mkdir "$DIR_XSL"
+fi
+
+if [[ -d "$DIR_DB" ]]; then
+  echo "Skipping creating of directory $DIR_DB due to it already existing."
+  rm -f $DIR_DB/*
+else
+  echo "Creating directory $DIR_DB"
+  mkdir "$DIR_DB"
+fi
+
+if [[ -d "$DIR_TMP" ]]; then
+  echo "Skipping creating of directory $DIR_TMP due to it already existing."
+  rm -f $DIR_TMP/*
+else
+  echo "Creating directory $DIR_TMP"
+  mkdir "$DIR_TMP"
+fi
